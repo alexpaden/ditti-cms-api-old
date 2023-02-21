@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ditti-cms-commercial"
+version = "0.1.0"
+description = ""
+authors = ["Alex Paden <padenfool@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ditti_web"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+farcaster = "^0.7.0"
+flask = "^2.2.3"
+python-dotenv = "^0.21.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
