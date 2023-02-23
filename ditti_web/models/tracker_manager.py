@@ -1,4 +1,4 @@
-from ditti_web.database import db
+from ditti_web.database import alchemy_db as db
 
 class TrackerManager(db.Model):
     __tablename__ = 'tracker_managers'

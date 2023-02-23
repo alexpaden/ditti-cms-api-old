@@ -1,4 +1,4 @@
-from ditti_web.database import db
+from ditti_web.database import alchemy_db as db
 from sqlalchemy.dialects.postgresql import JSONB
 
 class FollowTracker(db.Model):

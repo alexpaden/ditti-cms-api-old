@@ -1,4 +1,4 @@
-from ditti_web.database import db
+from ditti_web.database import alchemy_db as db
 
 class ProfileTracker(db.Model):
     __tablename__ = 'profile_trackers'
