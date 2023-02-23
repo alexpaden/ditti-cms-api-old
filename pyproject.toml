@@ -9,8 +9,11 @@ packages = [{include = "ditti_web"}]
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 farcaster = "^0.7.0"
-flask = "^2.2.3"
 python-dotenv = "^0.21.1"
+supabase = "^1.0.0"
+flask-migrate = "^4.0.4"
+psycopg2-binary = "^2.9.5"
+
 
 
 [build-system]

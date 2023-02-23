@@ -1,9 +1,13 @@
-# Import necessary modules
-from ditti_web.controllers.follow import get_followers
 from flask import Flask, jsonify, request
+from ditti_web.controllers.follow import get_followers
+from ditti_web.models import FollowTracker, TrackerManager, Trackee, ProfileTracker
+from ditti_web.config import Config
+from ditti_web.database import init_app
 
-# Initialize the Flask application
 app = Flask(__name__)
+app.config.from_object(Config)
+
+init_app(app)
 
 # Define a simple "hello world" route
 @app.route('/')
