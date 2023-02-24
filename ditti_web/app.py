@@ -15,7 +15,8 @@ tracker_service = TrackerService()
 @app.route('/')
 def index():
     result = tracker_service.get_fid_follower_list(533)
-    #tracker_service.post_follow_tracker_entry_by_fid(533)
+    tracker_service.post_follow_tracker_entry_by_fid(533)
+    #tracker_service.get_recent_follow_tracker_entry_by_fid(533)
     print(len(result))
     return result
 
