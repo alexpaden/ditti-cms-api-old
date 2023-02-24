@@ -1,4 +1,3 @@
-import os
 from ditti_web.database import warpcast
 from flask import jsonify
 

@@ -4,6 +4,10 @@ class TrackerController:
     def get_follow_tracker_by_fid(self, fid: int):
         pass
         #services.query_follow_tracker_by_fid
+    
+    def get_profile_tracker_by_fid(self, fid: int):
+        pass
+        #services.query_profile_tracker_by_fid
         
     def request_new_follow_track(self, fid: int):
         pass
