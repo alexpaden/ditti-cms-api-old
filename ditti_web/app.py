@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
-from ditti_web.controllers.follow import get_followers
-from ditti_web.services.tracker import TrackerService
+from ditti_web.controllers.tracker import tracker_bp
 from ditti_web.models import FollowTracker, TrackerManager, Trackee, ProfileTracker
 from ditti_web.config import Config
 from ditti_web.database import init_app
@@ -9,16 +8,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 init_app(app)
-tracker_service = TrackerService() 
+app.register_blueprint(tracker_bp)
+
 
 # Define a simple "hello world" route
 @app.route('/')
 def index():
-    result = tracker_service.get_fid_follower_list(533)
-    tracker_service.post_follow_tracker_entry_by_fid(533)
-    #tracker_service.get_recent_follow_tracker_entry_by_fid(533)
-    print(len(result))
-    return result
+    return 'Hello, world!'
 
 # Define a route that takes a query parameter
 @app.route('/hello')
