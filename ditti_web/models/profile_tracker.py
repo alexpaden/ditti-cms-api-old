@@ -8,5 +8,6 @@ class ProfileTracker(db.Model):
     username = db.Column(db.String(75))
     display_name = db.Column(db.String(64))
     bio = db.Column(db.String(160))
+    pfp_url = db.Column(db.String(255))
     following_count = db.Column(db.Integer)
     follower_count = db.Column(db.Integer)
