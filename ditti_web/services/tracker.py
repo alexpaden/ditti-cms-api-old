@@ -1,6 +1,8 @@
 from datetime import datetime
 from ditti_web.database import warpcast, supabase
 import logging
+import time
+
 
 class TrackerService:
     
@@ -46,18 +48,37 @@ class TrackerService:
             recent_following = recent[0]['following_fids']
             recent_followers = recent[0]['follower_fids']
 
+            def user_to_object(fid, max_attempts=3, retry_delay=1):
+                attempts = 0
+                while attempts < max_attempts:
+                    try:
+                        user = warpcast.get_user(fid)
+                        user_obj = {
+                            'fid': fid,
+                            'username': user.username,
+                            'display_name': user.display_name,
+                            'pfp_url': getattr(user.pfp, 'url', 'https://explorer.farcaster.xyz/avatar.png'),
+                            'bio': user.profile.bio.text,
+                            'follower_count': user.follower_count,
+                            'following_count': user.following_count,
+                        }
+                        return user_obj
+                    except Exception as e:
+                        attempts += 1
+                        logging.error(f"Error in user_to_object for fid {fid}: {e}. Retrying in {retry_delay} seconds...")
+                        time.sleep(retry_delay)
+                logging.error(f"Failed to get user for fid {fid} after {max_attempts} attempts.")
+                return None
             # Find which followers have been added or removed from the following list
             following_changes = {
-                'added': {fid: {} for fid in set(current_following) - set(recent_following)},
-                'removed': {fid: {} for fid in set(recent_following) - set(current_following)}
+                'added': [user_to_object(fid=fid) for fid in set(current_following) - set(recent_following)],
+                'removed': [user_to_object(fid=fid) for fid in set(recent_following) - set(current_following)]
             }
-
             # Find which followers have been added or removed from the followers list
             follower_changes = {
-                'added': {fid: {} for fid in set(current_followers) - set(recent_followers)},
-                'removed': {fid: {} for fid in set(recent_followers) - set(current_followers)}
+                'added': [user_to_object(fid=fid) for fid in set(current_followers) - set(recent_followers)],
+                'removed': [user_to_object(fid=fid) for fid in set(recent_followers) - set(current_followers)]
             }
-
             return (following_changes, follower_changes)
         except Exception as e:
             logging.error(f"Error in get_tracker_changes_by_fid: {e}")
@@ -68,9 +89,11 @@ class TrackerService:
             following_list = self.get_fid_following_list(fid)
             follower_list = self.get_fid_follower_list(fid)
             following_changes, follower_changes = self.get_tracker_changes_by_fid(fid, following_list, follower_list)
+            print("done")
             if not any(following_changes.values()) and not any(follower_changes.values()):
                 if not self.get_recent_follow_tracker_entry_by_fid(fid):
                     # first entry for a fid in follow tracker
+                    print("here")
                     res = supabase.from_('follow_trackers').insert({
                         'fid': fid,
                         'created_at': datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
@@ -94,7 +117,6 @@ class TrackerService:
             return res.data
         except Exception as e:
             logging.error(f"error in post_follow_tracker_entry_by_fid: {e}")
-        return None
 
 
     def get_fid_following_list(self, fid: int):
@@ -130,7 +152,6 @@ class TrackerService:
             return res.data
         except Exception as e:
             logging.error(f"error in post_profile_tracker_entry_by_fid: {e}")
-        return None
 
 
     def get_recent_profile_tracker_entry_by_fid(self, fid: int):
@@ -139,7 +160,6 @@ class TrackerService:
             return res.data
         except Exception as e:
             logging.error(f"error in get_recent_profile_tracker_entry_by_fid: {e}")
-        return None
 
     
     def get_profile_tracker_entries_by_fid(self, fid: int):
@@ -148,7 +168,6 @@ class TrackerService:
             return res.data
         except Exception as e:
             logging.error(f"error in get_profile_tracker_entries_by_fid: {e}")
-        return None
     
     
     def get_trackees_by_manager_fid(self, manager_fid: int):
@@ -157,7 +176,6 @@ class TrackerService:
             return res.data
         except Exception as e:
             logging.error(f"error in get_trackees_by_manager_fid: {e}")
-        return None
     
     
     def post_trackee_by_manager_fid(self, manager_fid: int, trackee_fid: int):
@@ -178,4 +196,3 @@ class TrackerService:
                 return "Manager and trackee already linked"
         except Exception as e:
             logging.error(f"error in post_trackee_by_manager_fid: {e}")
-        return None
