@@ -48,37 +48,16 @@ class TrackerService:
                 return no_recent, no_recent
             recent_following = recent[0]['following_fids']
             recent_followers = recent[0]['follower_fids']
-
-            def user_to_object(fid, max_attempts=3, retry_delay=1):
-                attempts = 0
-                while attempts < max_attempts:
-                    try:
-                        user = warpcast.get_user(fid)
-                        user_obj = {
-                            'fid': fid,
-                            'username': user.username,
-                            'display_name': user.display_name,
-                            'pfp_url': getattr(user.pfp, 'url', 'https://explorer.farcaster.xyz/avatar.png'),
-                            'bio': user.profile.bio.text,
-                            'follower_count': user.follower_count,
-                            'following_count': user.following_count,
-                        }
-                        return user_obj
-                    except Exception as e:
-                        attempts += 1
-                        logging.error(f"Error in user_to_object for fid {fid}: {e}. Retrying in {retry_delay} seconds...")
-                        time.sleep(retry_delay)
-                logging.error(f"Failed to get user for fid {fid} after {max_attempts} attempts.")
-                return None
+            
             # Find which followers have been added or removed from the following list
             following_changes = {
-                'added': [user_to_object(fid=fid) for fid in set(current_following) - set(recent_following)],
-                'removed': [user_to_object(fid=fid) for fid in set(recent_following) - set(current_following)]
+                'added': [fid for fid in set(current_following) - set(recent_following)],
+                'removed': [fid for fid in set(recent_following) - set(current_following)]
             }
             # Find which followers have been added or removed from the followers list
             follower_changes = {
-                'added': [user_to_object(fid=fid) for fid in set(current_followers) - set(recent_followers)],
-                'removed': [user_to_object(fid=fid) for fid in set(recent_followers) - set(current_followers)]
+                'added': [fid for fid in set(current_followers) - set(recent_followers)],
+                'removed': [fid for fid in set(recent_followers) - set(current_followers)]
             }
             return (following_changes, follower_changes)
         except Exception as e:
@@ -197,3 +176,26 @@ class TrackerService:
                 return "Manager and trackee already linked"
         except Exception as e:
             logging.error(f"error in post_trackee_by_manager_fid: {e}")
+
+
+    def user_to_object(fid, max_attempts=3, retry_delay=1):
+        attempts = 0
+        while attempts < max_attempts:
+            try:
+                user = warpcast.get_user(fid)
+                user_obj = {
+                    'fid': fid,
+                    'username': user.username,
+                    'display_name': user.display_name,
+                    'pfp_url': getattr(user.pfp, 'url', 'https://explorer.farcaster.xyz/avatar.png'),
+                    'bio': user.profile.bio.text,
+                    'follower_count': user.follower_count,
+                    'following_count': user.following_count,
+                }
+                return user_obj
+            except Exception as e:
+                attempts += 1
+                logging.error(f"Error in user_to_object for fid {fid}: {e}. Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+        logging.error(f"Failed to get user for fid {fid} after {max_attempts} attempts.")
+        return None
