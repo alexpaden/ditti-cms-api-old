@@ -6,3 +6,5 @@ flask db init
 
 flask db migrate -m "create user table"
 flask db upgrade
+
+poetry env use 3.10
