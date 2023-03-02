@@ -1,1 +1,1 @@
-web: poetry run gunicorn main:server
+web: poetry run gunicorn ditti_api.server:app
