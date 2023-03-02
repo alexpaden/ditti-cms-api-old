@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
-from ditti_web.controllers.tracker import tracker_bp
-from ditti_web.models import FollowTracker, TrackerManager, Trackee, ProfileTracker
-from ditti_web.config import Config
-from ditti_web.database import init_app
+from ditti_api.controllers.tracker import tracker_bp
+from ditti_api.models import FollowTracker, TrackerManager, Trackee, ProfileTracker
+from ditti_api.config import Config
+from ditti_api.database import init_app
 from flask_cors import CORS
 
 app = Flask(__name__)

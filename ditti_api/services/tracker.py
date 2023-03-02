@@ -1,5 +1,5 @@
 from datetime import datetime
-from ditti_web.database import warpcast, supabase
+from ditti_api.database import warpcast, supabase
 import logging
 import time
 
