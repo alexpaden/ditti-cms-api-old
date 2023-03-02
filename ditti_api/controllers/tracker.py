@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, request
-from ditti_web.services.tracker import TrackerService
+from ditti_api.services.tracker import TrackerService
 
 tracker_bp = Blueprint('tracker', __name__)
 tracker_service = TrackerService()

@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "ditti-cms-commercial"
+name = "ditti-cms-api"
 version = "0.1.0"
 description = ""
 authors = ["Alex Paden <padenfool@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ditti_web"}]
+packages = [{include = "ditti_api"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"

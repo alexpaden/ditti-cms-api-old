@@ -1,5 +1,5 @@
 import logging
-from ditti_web.server import start_server
+from ditti_api.server import start_server
 
 def main():
     # Set up the logging configuration

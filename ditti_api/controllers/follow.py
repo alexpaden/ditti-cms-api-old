@@ -1,4 +1,4 @@
-from ditti_web.database import warpcast
+from ditti_api.database import warpcast
 from flask import jsonify
 
 def get_followers():
