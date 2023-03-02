@@ -7,7 +7,8 @@ class TrackerService:
     
     def get_follow_tracker_entries_by_fid(self, fid: int):
         try:
-            res = supabase.from_('follow_trackers').select('*').eq('fid', fid).execute()
+            columns=['id', 'created_at', 'follower_changes', 'following_changes']
+            res = supabase.from_('follow_trackers').select(*columns).eq('fid', fid).execute()
             entries = []
             for data in res.data:
                 follower_changes = {
