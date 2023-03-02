@@ -1,6 +1,5 @@
 import logging
 from ditti_api.server import start_server
-from ditti_api.app import app
 import os
 
 

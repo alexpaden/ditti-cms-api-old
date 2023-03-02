@@ -1,1 +1,1 @@
-web: poetry run python main.py :app
+web: poetry run python main.py
