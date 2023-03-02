@@ -2,7 +2,7 @@
 name = "ditti-cms-api"
 version = "0.1.0"
 description = ""
-authors = ["Alex Paden <padenfool@gmail.com>"]
+authors = ["Alex Paden <padenalex0@gmail.com>"]
 readme = "README.md"
 packages = [{include = "ditti_api"}]
 

@@ -8,9 +8,7 @@ def main():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     
-    start_server(threaded=True, debug=True)
-
-
+    start_server(threaded=True, debug=False)
 
 if __name__ == '__main__':
     main()
