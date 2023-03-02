@@ -1,1 +1,1 @@
-web: poetry shell --tty && flask run --host=0.0.0.0 --port=$PORT
+web: poetry run gunicorn main:server
