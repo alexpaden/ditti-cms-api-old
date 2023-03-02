@@ -1,5 +1,7 @@
 import logging
 from ditti_api.server import start_server
+import os
+
 
 def main():
     # Set up the logging configuration
@@ -8,7 +10,7 @@ def main():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     
-    start_server(threaded=True, debug=False)
+    start_server(threaded=True, debug=True, port=os.getenv("PORT", default=5000))
 
 if __name__ == '__main__':
     main()
