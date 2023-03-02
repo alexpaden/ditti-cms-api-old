@@ -3,8 +3,10 @@ from ditti_web.controllers.tracker import tracker_bp
 from ditti_web.models import FollowTracker, TrackerManager, Trackee, ProfileTracker
 from ditti_web.config import Config
 from ditti_web.database import init_app
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(Config)
 
 init_app(app)
