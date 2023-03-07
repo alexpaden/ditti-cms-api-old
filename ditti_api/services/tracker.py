@@ -43,8 +43,8 @@ class TrackerService:
             recent = self.get_recent_follow_tracker_entry_by_fid(fid)
             if not recent:
                 no_recent = {
-                    "added": {},
-                    "removed": {}
+                    "added": [],
+                    "removed": []
                 }
                 return no_recent, no_recent
             recent_following = recent[0]['following_fids']
