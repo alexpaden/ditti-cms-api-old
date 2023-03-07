@@ -1,1 +1,1 @@
-web: poetry run gunicorn main:app
+web: poetry run gunicorn main:app --timeout 90
